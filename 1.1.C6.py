@@ -1,13 +1,6 @@
  #-*- coding: utf-8 -
 import math
-
 import numpy as np
-
-
-
-
-
-
 def bisection(a,b,sigma):
     c=5
     while(b-a)/2.0 > sigma:
