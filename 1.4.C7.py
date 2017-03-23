@@ -5,8 +5,11 @@ import matplotlib.pyplot as plt
 #from scipy.optimize import fsolve
 
 def newtonRaphMethod(f,fprim,x):
-    for i in range(0,1000):
-        x= x-f(x)/fprim(x)
+    for i in range(0,10):
+        if(fprim(x)==0):
+            break
+        else:
+            x= x-f(x)/fprim(x)
     print(x)
 
 def function(x):
@@ -26,6 +29,6 @@ def plotCurve():
     plt.show()
 
 newtonRaphMethod(function, functionPrim,-1.0)
-newtonRaphMethod(function, functionPrim,0.001)
+newtonRaphMethod(function, functionPrim,0)
 newtonRaphMethod(function, functionPrim,2)
 #plotCurve()
