@@ -1,0 +1,6 @@
+a = list = [1,2,3]
+b= Dictionary={b=5}
+
+function(x1,x2,x3,b=5)
+
+functon(*a,**b) ## *a unpackets the list 

@@ -2,7 +2,7 @@
 import math
 import numpy as np
 import matplotlib.pyplot as plt
-#from scipy.optimize import fsolve
+from scipy.optimize import fsolve
 
 def newtonRaphMethod(f,fprim,x):
     for i in range(0,10):
@@ -27,8 +27,8 @@ def plotCurve():
     ax.axhline(y=0, color='k')
     ax.axvline(x=0, color='k')
     plt.show()
-
+print(fsolve(function,-1))
 newtonRaphMethod(function, functionPrim,-1.0)
 newtonRaphMethod(function, functionPrim,0)
 newtonRaphMethod(function, functionPrim,2)
-#plotCurve()
+plotCurve()
