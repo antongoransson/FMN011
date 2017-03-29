@@ -99,38 +99,17 @@ def getBaseCordsY(b,d):
     by[5] = -d/2.0
     return by
 
-def stf1(xt):
-    e=np.zeros(3)                                                  #ROW 2 IN EQUATION
-    e[0]= a**(2)+ 2*xt[0]*xt[1]-2*xt[0]*(xp[0]+np.sqrt(3)*(yp[0]-yp[1]))-2*xp[1]*xt[1]-((np.sqrt(3)*xp[0]-yp[0]+yp[1])**(2)+h[0]**(2)+h[1]**(2)-4*xp[0]**(2)-xp[1]**(2))+ getThirdRow(1,xt,xp,h)
-                                                                                #ROW 2 IN EQUATION                                  #ROW 3 IN EQUATION
-    e[1]= a**(2)-4*xt[0]*xt[2]-2*xt[0]*(xp[0]-3*xp[2]+np.sqrt(3)*(yp[0]-yp[2]))-2*xt[2]*(-3*xp[0]+xp[2]+np.sqrt(3)*(yp[0]-yp[2])) -((np.sqrt(3)*(xp[0]+xp[2])-yp[0]+yp[2])**(2)+(h[0]**(2)+h[2]**(2))-4*xp[0]**(2)-4*xp[2]**(2))+getThirdRow(2,xt,xp,h)
-                                                                        #ROW 2 IN EQUATION
-    e[2] = a**(2) + 2*xt[1]*xt[2]-2*xt[2]*(xp[2]+np.sqrt(3)*(yp[1]-yp[2]))-((np.sqrt(3)*xp[2]-yp[1]+yp[2])**(2)+(h[1]**(2)+h[2]**(2))-xp[1]**(2)-4*xp[2]**(2))+ getThirdRow(3,xt,xp,h)
-
-    return e
-
-def stf(x,a,b,d,L,p,h,xp,yp):
+def stf(x,*data):
+    a,b,d,L,p,h,xp,yp = data
     xt1=x[0]
     xt2=x[1]
     xt3=x[2]
-    F=np.zeros(3)                                                  #ROW 2 IN EQUATION
+    F= np.zeros(3)
     F[0]= a**2+ 2*xt1*xt2-2*xt1*(xp[0]+np.sqrt(3)*(yp[0]-yp[1]))-2*xp[1]*xt2-((np.sqrt(3)*xp[0]-yp[0]+yp[1])**(2)+h[0]**(2)+h[1]**(2)-4*xp[0]**(2)-xp[1]**(2))+ 2*np.sqrt((h[0]**(2)-4*(xt1-xp[0])**(2))*(h[1]**(2)-(xt2-xp[1])**(2)))
-                                                                            #ROW 2 IN EQUATION                                  #ROW 3 IN EQUATION
     F[1]= a**(2)-4*xt1*xt3-2*xt1*(xp[0]-3*xp[2]+np.sqrt(3)*(yp[0]-yp[2]))-2*xt3*(-3*xp[0]+xp[2]+np.sqrt(3)*(yp[0]-yp[2])) -((np.sqrt(3)*(xp[0]+xp[2])-yp[0]+yp[2])**(2)+(h[0]**(2)+h[2]**(2))-4*xp[0]**(2)-4*xp[2]**(2))+2*np.sqrt((h[0]**(2)-4*(xt1-xp[0])**(2))*(h[2]**(2)-4*(xt3-xp[2])**(2)))
-                                                                        #ROW 2 IN EQUATION
     F[2]= a**(2) + 2*xt2*xt3-2*xt3*(xp[2]+np.sqrt(3)*(yp[1]-yp[2]))-2*xp[1]*xt2-((np.sqrt(3)*xp[2]-yp[1]+yp[2])**(2)+(h[1]**(2)+h[2]**(2))-xp[1]**(2)-4*xp[2]**(2))+ 2*np.sqrt((h[1]**(2)-(xt2-xp[1])**(2))*(h[2]**(2)-4*(xt3-xp[2])**(2)))
-
     return F
 
-def getThirdRow(i,xt,xp,h):
-    row =0
-    if i==1:
-        row=2*np.sqrt((h[0]**(2)-4*(xt[0]-xp[0])**(2))*(h[1]**(2)-(xt[1]-xp[1])**(2)))
-    elif i==2:
-        row=2*np.sqrt((h[0]**(2)-4*(xt[0]-xp[0])**(2))*(h[2]**(2)-4*(xt[2]-xp[2])**(2)))
-    else:
-        row=2*np.sqrt((h[1]**(2)-(xt[1]-xp[1])**(2))*(h[2]**(2)-4*(xt[2]-xp[2])**(2)))
-    return row
 
 def plotCurve(x,y):
     x = np.linspace(-10,10,num=1000)
@@ -157,9 +136,10 @@ def task2():
     xp = getXPCord(b,d,p)
     yp = getYPCord(b,d,p)
     x0 = np.array([4,-3,4])
-    x = fsolve(stf,x0,(a,b,d,L,p,h,xp,yp))
+    data = a,b,d ,L,p,h,xp,yp
+    x = fsolve(stf,x0,data)
     print(x)
-    print (stf(x,a,b,d,L,p,h,xp,yp))
+    print (stf(x,*data))
 def task3():
     a=10
     b=15
@@ -171,9 +151,10 @@ def task3():
     xp = getXPCord(b,d,p)
     yp = getYPCord(b,d,p)
     x0 = np.array([4,-3,4])
-    x = fsolve(stf,x0,(a,b,d,L,p,h,xp,yp))
+    data = a,b,d ,L,p,h,xp,yp
+    x = fsolve(stf,x0,data)
     print(x)
-    print (stf(x,a,b,d,L,p,h,xp,yp))
+    print (stf(x,*data))
 
 def task5():
     a=10
@@ -181,19 +162,25 @@ def task5():
     d=1
     L = np.zeros(6)
     L.fill(15)
-    L= np.array([15,15,8,8,8,8])
+#    L= np.array([15,15,8,8,8,8])
     p = getP(L,b,d)
     h= getH(L,p)
     xp = getXPCord(b,d,p)
     yp = getYPCord(b,d,p)
     x0 = np.array([2.5,-5.5,2.5])
-    xt = fsolve(stf,x0,(a,b,d,L,p,h,xp,yp))
+    data = a,b,d ,L,p,h,xp,yp
+    xt = fsolve(stf,x0,data)
     yt = getYTCord(xt,xp,yp)
     zt = getZTCord(h,xt,xp)
     bx = getBaseCordsX(b,d)
     by = getBaseCordsY(b,d)
     bz = np.zeros(6)
     lx,ly,lz= getLegCords(xt,yt,zt,bx,by,bz)
+    data= xt,yt,zt,bx,by,bz,lx,ly,lz
+    drawFigure(*data)
+
+def drawFigure(*data):
+    xt,yt,zt,bx,by,bz,lx,ly,lz= data
     fig = plt.figure()
     ax = Axes3D(fig)
     top = ax.plot_trisurf(xt,yt,zt,color='cyan')
@@ -204,6 +191,7 @@ def task5():
     ax.add_collection3d(base)
     ax.auto_scale_xyz([-10, 10], [-13, 13], [0, 15])
     plt.show()
+
 #task1()
-#task2()
+task3()
 task5()
