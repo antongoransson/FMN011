@@ -7,7 +7,7 @@ from scipy.optimize import fsolve
 from numpy.linalg import *
 
 def f(n):
-    A = np.mat(np.zeros((n,n)))
+    A = np.matrix(np.zeros((n,n)))
     for i in range (n):
         for j in range(n):
             A[i,j]=5/(i+1+2*(j+1)-1)
