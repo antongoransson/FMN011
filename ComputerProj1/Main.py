@@ -27,7 +27,7 @@ def getP(L,b,d):
 def getH(L,P):
     h = np.zeros(3)
     for i in range(3):
-        h[i]= np.sqrt(L[2*i+1]**(2)-P[i]**2)
+        h[i]= np.sqrt(L[2*i]**(2)-P[i]**2)
     return h
 
 def getLegCords(xt,yt,zt,bx,by,bz):
@@ -104,6 +104,7 @@ def stf(x,*data):
     xt1=x[0]
     xt2=x[1]
     xt3=x[2]
+    print(xt1,xt2,xt3)
     F= np.zeros(3)
     F[0]= a**2+ 2*xt1*xt2-2*xt1*(xp[0]+np.sqrt(3)*(yp[0]-yp[1]))-2*xp[1]*xt2-((np.sqrt(3)*xp[0]-yp[0]+yp[1])**(2)+h[0]**(2)+h[1]**(2)-4*xp[0]**(2)-xp[1]**(2))+ 2*np.sqrt((h[0]**(2)-4*(xt1-xp[0])**(2))*(h[1]**(2)-(xt2-xp[1])**(2)))
     F[1]= a**(2)-4*xt1*xt3-2*xt1*(xp[0]-3*xp[2]+np.sqrt(3)*(yp[0]-yp[2]))-2*xt3*(-3*xp[0]+xp[2]+np.sqrt(3)*(yp[0]-yp[2])) -((np.sqrt(3)*(xp[0]+xp[2])-yp[0]+yp[2])**(2)+(h[0]**(2)+h[2]**(2))-4*xp[0]**(2)-4*xp[2]**(2))+2*np.sqrt((h[0]**(2)-4*(xt1-xp[0])**(2))*(h[2]**(2)-4*(xt3-xp[2])**(2)))
@@ -150,31 +151,33 @@ def task3():
     h= getH(L,p)
     xp = getXPCord(b,d,p)
     yp = getYPCord(b,d,p)
-    x0 = np.array([4,-3,4])
+    x0 = xp
     data = a,b,d ,L,p,h,xp,yp
     x = fsolve(stf,x0,data)
     print(x)
-    print (stf(x,*data))
+    print(stf(x,*data))
 
-def task5():
+def task5(L):
     a=10
     b=15
     d=1
-    L = np.zeros(6)
-    L.fill(15)
+    L = L
 #    L= np.array([15,15,8,8,8,8])
     p = getP(L,b,d)
     h= getH(L,p)
+    print(h)
     xp = getXPCord(b,d,p)
     yp = getYPCord(b,d,p)
-    x0 = np.array([2.5,-5.5,2.5])
-    data = a,b,d ,L,p,h,xp,yp
+    x0 = np.array([7.5,-5,2.3])
+#    print(x0)
+    data = a,b,d,L,p,h,xp,yp
     xt = fsolve(stf,x0,data)
     yt = getYTCord(xt,xp,yp)
     zt = getZTCord(h,xt,xp)
     bx = getBaseCordsX(b,d)
     by = getBaseCordsY(b,d)
     bz = np.zeros(6)
+    print(xp,xt)
     lx,ly,lz= getLegCords(xt,yt,zt,bx,by,bz)
     data= xt,yt,zt,bx,by,bz,lx,ly,lz
     drawFigure(*data)
@@ -190,8 +193,17 @@ def drawFigure(*data):
     ax.add_collection3d(top)
     ax.add_collection3d(base)
     ax.auto_scale_xyz([-10, 10], [-13, 13], [0, 15])
-    plt.show()
+
 
 #task1()
 task3()
-task5()
+L = np.zeros(6)
+L.fill(15)
+#task5(L)
+L=([8,15,8,15,8,15])
+#task5(L)
+L= np.array([15,15,8,8,8,8])
+#task5(L)
+L.fill(8)
+#task5(L)
+#plt.show()
